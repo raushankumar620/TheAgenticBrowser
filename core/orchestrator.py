@@ -17,7 +17,7 @@ from core.utils.openai_msg_parser import AgentConversationHandler, ConversationS
 from core.utils.custom_exceptions import CustomException, PlannerError, BrowserNavigationError, SSAnalysisError, CritiqueError
 
 
-tokenizer = tiktoken.get_encoding("o200k_base")
+tokenizer = tiktoken.encoding_for_model("gpt-4o")
 
 
 def ensure_tool_response_sequence(messages):
@@ -192,6 +192,8 @@ class Orchestrator:
         self.iteration_counter = 0
         self.session_id = None
         self.current_url = None
+        self.ss_enabled = os.getenv('AGENTIC_BROWSER_SS_ENABLED', 'false').lower() == 'true'
+
 
     def update_token_usage(self, agent_type: str, usage: Usage):
         self.cumulative_tokens[agent_type]['total'] += usage.total_tokens
@@ -379,20 +381,21 @@ class Orchestrator:
 
 
                     # Pre-Action Screenshot
-                    try:
-                        logfire.info("Taking Pre_Action_SS")
-                        pre_action_ss = await self.browser_manager.take_screenshots(
-                            "Pre_Action_SS", page=None, full_page=False
-                        )
-                        logfire.info(f"SS Saved to Path: {pre_action_ss}")
-                    except Exception as e:
-                        error_msg = f"Failed to take Pre_Action_SS: {str(e)}"
-                        logfire.error(error_msg, exc_info=True)
-                        await self.browser_manager.notify_user(
-                            error_msg,
-                            message_type=MessageType.ERROR
-                        )
-                        raise CustomException(error_msg, original_error=e)
+                    if self.ss_enabled:
+                        try:
+                            logfire.info("Taking Pre_Action_SS")
+                            pre_action_ss = await self.browser_manager.take_screenshots(
+                                "Pre_Action_SS", page=None, full_page=False
+                            )
+                            logfire.info(f"SS Saved to Path: {pre_action_ss}")
+                        except Exception as e:
+                            error_msg = f"Failed to take Pre_Action_SS: {str(e)}"
+                            logfire.error(error_msg, exc_info=True)
+                            await self.browser_manager.notify_user(
+                                error_msg,
+                                message_type=MessageType.ERROR
+                            )
+                            raise CustomException(error_msg, original_error=e)
 
                     browser_error = None
                     tool_interactions_str = None
@@ -476,43 +479,44 @@ class Orchestrator:
 
 
                     # Post_Action_SS Screenshot
-                    try:
-                        logfire.info("Taking Post_Action_SS")
-                        post_action_ss = await self.browser_manager.take_screenshots(
-                            "Post_Action_SS", page=None, full_page=False
-                        )
-                        logfire.info(f"Post_Action_SS Saved to Path: {post_action_ss}")
-                    except Exception as e:
-                        error_msg = f"Failed to take Post_Action_SS: {str(e)}"
-                        logfire.error(error_msg, exc_info=True)
-                        await self.browser_manager.notify_user(
-                            error_msg,
-                            message_type=MessageType.ERROR
-                        )
-                        raise CustomException(error_msg, original_error=e)
+                    if self.ss_enabled:
+                        try:
+                            logfire.info("Taking Post_Action_SS")
+                            post_action_ss = await self.browser_manager.take_screenshots(
+                                "Post_Action_SS", page=None, full_page=False
+                            )
+                            logfire.info(f"Post_Action_SS Saved to Path: {post_action_ss}")
+                        except Exception as e:
+                            error_msg = f"Failed to take Post_Action_SS: {str(e)}"
+                            logfire.error(error_msg, exc_info=True)
+                            await self.browser_manager.notify_user(
+                                error_msg,
+                                message_type=MessageType.ERROR
+                            )
+                            raise CustomException(error_msg, original_error=e)
 
-                    # SS Analysis
-                    try:
-                        logfire.info("Running SS analysis")
-                        
-                        
-                        ss_analysis_response = ImageAnalyzer(
-                            pre_action_ss, 
-                            post_action_ss, 
-                            c_step
-                        ).analyze_images()
-                        self.conversation_handler.add_ss_analysis_message(ss_analysis_response)
-                        
-                        logfire.info(f"SS Analysis Response: {ss_analysis_response}")
-                    except Exception as e:
-                        error_msg = f"SS Analysis failed: {str(e)}"
-                        logfire.error(error_msg, exc_info=True)
-                        await self.browser_manager.notify_user(
-                            error_msg,
-                            message_type=MessageType.ERROR
-                        )
-                        await self.notify_client(f"Error in SS Analysis: {str(e)}", MessageType.ERROR)
-                        raise SSAnalysisError(error_msg, original_error=e)
+                        # SS Analysis
+                        try:
+                            logfire.info("Running SS analysis")
+                            
+                            
+                            ss_analysis_response = ImageAnalyzer(
+                                pre_action_ss, 
+                                post_action_ss, 
+                                c_step
+                            ).analyze_images()
+                            self.conversation_handler.add_ss_analysis_message(ss_analysis_response)
+                            
+                            logfire.info(f"SS Analysis Response: {ss_analysis_response}")
+                        except Exception as e:
+                            error_msg = f"SS Analysis failed: {str(e)}"
+                            logfire.error(error_msg, exc_info=True)
+                            await self.browser_manager.notify_user(
+                                error_msg,
+                                message_type=MessageType.ERROR
+                            )
+                            await self.notify_client(f"Error in SS Analysis: {str(e)}", MessageType.ERROR)
+                            raise SSAnalysisError(error_msg, original_error=e)
 
 
                     # Critique Agent
@@ -527,7 +531,7 @@ class Orchestrator:
                             f'next_step="{c_step}" '
                             f'tool_response="{browser_response.data}" '
                             f'tool_interactions="{filtered_interactions}" '
-                            f'ss_analysis="{ss_analysis_response}"'
+                            f'ss_analysis="{ss_analysis_response if self.ss_enabled else "SS analysis not available"}"'
                             f'browser_error="{browser_error if browser_error else "None"}"'
                         )
 
