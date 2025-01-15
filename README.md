@@ -119,17 +119,27 @@ Create a .env file by copying the provided example file.
 
 Edit the .env file and set the following variables:
 
-    AGENTIC_BROWSER_TEXT_MODEL=
-    AGENTIC_BROWSER_TEXT_API_KEY=
-    STEEL_DEV_API_KEY=# Optional: Enable remote browser via Steel Dev CDP, (Only useful when launched as an API, see Step 7)
-    AGENTIC_BROWSER_TEXT_BASE_URL=
-    AGENTIC_BROWSER_SS_MODEL=
-    AGENTIC_BROWSER_SS_API_KEY=
-    AGENTIC_BROWSER_SS_BASE_URL=
-    LOGFIRE_TOKEN=
-    GOOGLE_API_KEY=
-    GOOGLE_CX=
-    BROWSER_STORAGE_DIR=
+    # AGENTIC_BROWSER Configuration
+    AGENTIC_BROWSER_TEXT_MODEL=<text model name eg. "gpt-4o">
+    AGENTIC_BROWSER_TEXT_API_KEY=<your text model API key>
+    AGENTIC_BROWSER_TEXT_BASE_URL=<text model base url eg. "https://api.openai.com/v1">
+    
+    # Screenshot Analysis Configuration
+    AGENTIC_BROWSER_SS_ENABLED=<true/false>
+    AGENTIC_BROWSER_SS_MODEL=<screenshot model name eg. "gpt-4o">
+    AGENTIC_BROWSER_SS_API_KEY=<your screenshot model API key>
+    AGENTIC_BROWSER_SS_BASE_URL=<screenshot model base url eg. "https://api.openai.com/v1">
+
+    # Logging
+    LOGFIRE_TOKEN=<your logfire write token>
+    
+    # Google Search Configuration
+    GOOGLE_API_KEY=<your Custom Search json api>
+    GOOGLE_CX=<your google custom search engine id>
+    
+    # Browser Configuration
+    BROWSER_STORAGE_DIR=<path to browser storage directory eg. "./browser_storage">
+    STEEL_DEV_API_KEY=<Optional: Enable remote browser via Steel Dev CDP, (Only useful when launched as an API, see Step 7>
 
 #### 7. Running the project
 
