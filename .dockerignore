@@ -1,0 +1,8 @@
+browser_storage/*
+venv/
+videos/*
+screenshots/*
+log_files/*
+logs/*
+conversation_logs/*
+.env
