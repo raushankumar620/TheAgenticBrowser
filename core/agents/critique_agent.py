@@ -1,7 +1,7 @@
 from pydantic_ai import Agent
 from pydantic import BaseModel
 from pydantic_ai.settings import ModelSettings
-
+from core.skills.final_response import get_response
 import os
 from dotenv import load_dotenv
 
@@ -109,3 +109,10 @@ CA_agent = Agent(
     ),
     result_type=CritiqueOutput,
 )
+
+@CA_agent.tool_plain
+async def final_response(plan: str, browser_response: str, current_step: str) -> str:
+
+    response = await get_response(plan, browser_response, current_step)
+
+    return response
