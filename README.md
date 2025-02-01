@@ -185,10 +185,6 @@ docker run -it -p 8000:8000 --env-file .env agentic_browser
 
 ```
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ## Acknowledgements
 
 - [Agent-E](https://github.com/EmergenceAI/Agent-E?tab=readme-ov-file)
