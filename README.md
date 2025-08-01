@@ -1,191 +1,204 @@
-# Agentic Browser
+# 🌐 Agentic Browser
 
-## Table of Contents
+## 📑 Table of Contents
 
-- [Overview](#overview)
-- [Features](#features)
-- [Architecture](#architecture)
-- [Agents Workflow](#agents-workflow)
-- [Quick Start](#quick-start)
-- [License](#license)
-- [Acknowledgements](#acknowledgements)
+- [📝 Overview](#overview)
+- [✨ Features](#features)
+- [🏗️ Architecture](#architecture)
+- [🤖 Agents Workflow](#agents-workflow)
+- [⚡ Quick Start](#quick-start)
+- [📄 License](#license)
+- [🙏 Acknowledgements](#acknowledgements)
 
-## Overview
+---
 
-Agentic Browser is an agent-based system designed to automate browser interactions using a natural language interface. Built upon the [PydanticAI Python agent framework](https://github.com/pydantic/pydantic-ai), Agentic Browser allows users to automate tasks such as form filling, product searches on e-commerce platforms, content retrieval, media interaction, and project management on various platforms. 
+## 📝 Overview
 
-## Features
+**Agentic Browser** is an agent-powered system that automates browser interactions using natural language commands. Built atop the [PydanticAI Python agent framework](https://github.com/pydantic/pydantic-ai), it empowers users to automate tasks like form filling, product search, data extraction, media interaction, and project management on diverse platforms—all with simple text instructions.
 
-### Browser Automation
+---
 
-- **Web Research and Analysis**: Intelligent web research across academic papers, travel sites & code repositories with natural language queries.
-- **Data Extraction**: Extracts and compiles data of various types such as sports data, historical data, stock market and currencies.
-- **E-commerce Information**: Scrapes information like price, specifications, availaibility of a product on various e-commerce websites.
-- **Web Traversal**: Smart cross-domain navigation with context-aware website traversal & data correlation.
+## ✨ Features
 
-## Architecture
+### 🧠 Browser Automation
 
-![Agentic Browser](ta_browser_workflow.png)
+- **🔍 Web Research & Analysis**  
+  Natural language search across academic papers, travel portals, and code repositories.
 
-Agentic Browser uses three specialized agents working in harmony:
+- **📊 Data Extraction**  
+  Extracts and compiles sports stats, historical figures, stock market data, currencies, and more.
 
-- **Planner Agent**: The strategist that breaks down user requests into clear, executable steps. It creates and adapts plans based on feedback and progress.
+- **🛒 E-commerce Scraping**  
+  Retrieves price, specs, and availability from various shopping sites.
 
-- **Browser Agent**: The executor that directly interacts with web pages. It performs actions like clicking, typing, navigating, and extracting information using browser automation tools.
+- **🌍 Smart Web Traversal**  
+  Context-aware navigation and cross-domain data correlation.
 
-- **Critique Agent**: The quality controller that analyzes actions, verifies results, and guides the workflow. It determines if tasks are complete or need refinement.
+---
 
-The agents work in a feedback loop to ensure that actions are taken correctly and tasks are completed effectively.
+## 🏗️ Architecture
 
-## Agents Workflow
+![Agentic Browser Workflow](ta_browser_workflow.png)
 
-### Step 1: Planning Phase
+Agentic Browser employs a tri-agent collaborative architecture:
 
-- The **Planner Agent** receives a user request
-- Analyzes the task requirements
-- Creates a step-by-step execution plan
-- Determines the first action to take
+- **🧩 Planner Agent**  
+  Strategizes and decomposes user requests into actionable steps. Adapts plans based on ongoing results.
 
-### Step 2: Execution Phase
+- **🕹️ Browser Agent**  
+  Executes browser actions (clicks, typing, navigation, extraction) using automation tools.
 
-- The **Browser Agent** receives the current step
-- Executes precise browser actions (navigation, clicks, text entry)
-- Uses tools like DOM inspection and screenshot analysis
-- Reports action results
+- **🔬 Critique Agent**  
+  Evaluates outcomes, analyzes screenshots & DOM, and guides workflow quality.
 
-### Step 3: Evaluation Phase
+Together, these agents form an iterative feedback loop to ensure tasks are completed accurately and efficiently.
 
-- The **Critique Agent** reviews the execution
-- Analyzes screenshots and DOM changes
-- Verifies if the step was successful
-- Decides whether to:
-  - Complete the task and return results to user
-  - Continue to next step in plan
-  - Request plan modification from Planner Agent
+---
 
-This cycle continues until the task is successfully completed or a terminal condition is reached.
+## 🤖 Agents Workflow
 
-## Quick Start
+### 1️⃣ Planning Phase  
+- **Planner Agent:**  
+  - Receives request  
+  - Analyzes requirements  
+  - Generates step-by-step plan  
+  - Determines first action
 
-### Setup
+### 2️⃣ Execution Phase  
+- **Browser Agent:**  
+  - Executes plan step  
+  - Performs browser actions (navigation, click, input)  
+  - Uses DOM/screenshot analysis  
+  - Reports results
 
-To get started with Agentic Browser, follow the steps below to install dependencies and configure your environment.
+### 3️⃣ Evaluation Phase  
+- **Critique Agent:**  
+  - Reviews execution  
+  - Analyzes screenshots/DOM  
+  - Verifies success  
+  - Decides:  
+    - Complete task  
+    - Continue to next step  
+    - Request plan modification
 
-#### 1. Install `uv`
+This loop continues until the task is completed or a terminal condition is reached.
 
-Agentic Browser uses `uv` to manage the Python virtual environment and package dependencies.
+---
 
-- macOS/Linux:
+## ⚡ Quick Start
 
+### 🛠️ Setup
+
+Follow these steps to install and configure Agentic Browser:
+
+#### 1. 📦 Install `uv`
+
+Agentic Browser uses [`uv`](https://github.com/astral-sh/uv) for Python environment and dependency management.
+
+- **macOS/Linux**
   ```bash
   curl -LsSf https://astral.sh/uv/install.sh | sh
   ```
-
-- Windows:
-
+- **Windows**
   ```bash
   powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
   ```
+  _Or install using pip_
 
-  You can install uv using pip
+#### 2. 🚀 Clone the Repository
+```bash
+git clone https://github.com/TheAgenticAI/TheAgenticBrowser
+cd TheAgenticBrowser
+```
 
-#### 2. Clone the repository:
+#### 3. 🐍 Create & Activate Virtual Environment
+```bash
+uv venv --python=3.11
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+```
 
-    git clone https://github.com/TheAgenticAI/TheAgenticBrowser
-    
-#### 3. Set up the virtual environment
+#### 4. 📥 Install Dependencies
+```bash
+uv pip install -r requirements.txt
+```
 
-Use uv to create and activate a virtual environment for the project.
+#### 5. 🌐 Install Playwright Drivers
+```bash
+playwright install
+```
+*To use your local Chrome with Playwright, set `BROWSER_STORAGE_DIR` to your Chrome profile path in `.env`.*
 
-    uv venv --python=3.11
-    source .venv/bin/activate
-    # On Windows: .venv\Scripts\activate
+#### 6. ⚙️ Configure Environment Variables
+Copy and edit the `.env` file:
+```bash
+cp .env.example .env
+```
+Set the following in `.env`:
+```
+# AGENTIC_BROWSER Configuration
+AGENTIC_BROWSER_TEXT_MODEL=<text model name, e.g. "gpt-4o">
+AGENTIC_BROWSER_TEXT_API_KEY=<your text model API key>
+AGENTIC_BROWSER_TEXT_BASE_URL=<text model base url, e.g. "https://api.openai.com/v1">
 
-#### 4. Install dependencies
+# Screenshot Analysis Configuration
+AGENTIC_BROWSER_SS_ENABLED=<true/false>
+AGENTIC_BROWSER_SS_MODEL=<screenshot model name, e.g. "gpt-4o">
+AGENTIC_BROWSER_SS_API_KEY=<your screenshot model API key>
+AGENTIC_BROWSER_SS_BASE_URL=<screenshot model base url, e.g. "https://api.openai.com/v1">
 
-    uv pip install -r requirements.txt
+# Logging
+LOGFIRE_TOKEN=<your logfire write token>
 
-#### 5. Install Playwright Drivers
+# Google Search Configuration
+GOOGLE_API_KEY=<your Custom Search JSON API>
+GOOGLE_CX=<your Google Custom Search Engine ID>
 
-    playwright install
+# Browser Configuration
+BROWSER_STORAGE_DIR=<path to browser storage dir, e.g. "./browser_storage">
+STEEL_DEV_API_KEY=<Optional: Enable remote browser via Steel Dev CDP>
+```
 
-If you want to use your local Chrome browser over Playwright, go to chrome://version/ in Chrome, find the path to your profile, and set BROWSER_STORAGE_DIR to that path in .env
-
-#### 6. Configure the environment
-
-Create a .env file by copying the provided example file.
-
-    cp .env.example .env
-
-Edit the .env file and set the following variables:
-
-    # AGENTIC_BROWSER Configuration
-    AGENTIC_BROWSER_TEXT_MODEL=<text model name eg. "gpt-4o">
-    AGENTIC_BROWSER_TEXT_API_KEY=<your text model API key>
-    AGENTIC_BROWSER_TEXT_BASE_URL=<text model base url eg. "https://api.openai.com/v1">
-    
-    # Screenshot Analysis Configuration
-    AGENTIC_BROWSER_SS_ENABLED=<true/false>
-    AGENTIC_BROWSER_SS_MODEL=<screenshot model name eg. "gpt-4o">
-    AGENTIC_BROWSER_SS_API_KEY=<your screenshot model API key>
-    AGENTIC_BROWSER_SS_BASE_URL=<screenshot model base url eg. "https://api.openai.com/v1">
-
-    # Logging
-    LOGFIRE_TOKEN=<your logfire write token>
-    
-    # Google Search Configuration
-    GOOGLE_API_KEY=<your Custom Search json api>
-    GOOGLE_CX=<your google custom search engine id>
-    
-    # Browser Configuration
-    BROWSER_STORAGE_DIR=<path to browser storage directory eg. "./browser_storage">
-    STEEL_DEV_API_KEY=<Optional: Enable remote browser via Steel Dev CDP, (Only useful when launched as an API, see Step 7>
-
-#### 7. Running the project
-
-You can directly run the project from the main.py file or even spin up a server to interact through an API
-
-- Direct
+#### 7. 🏃‍♂️ Run the Project
+- **Direct**
   ```bash
   python3 -m core.main
   ```
-- API
-
+- **API Server**
   ```bash
   uvicorn core.server.api_routes:app --loop asyncio
   ```
-
-  Details -
-
-  ```
+  _Sample API call:_
+  ```http
   POST http://127.0.0.1:8000/execute_task
-
   {
       "command": "Give me the price of RTX 3060ti on amazon.in and give me the latest delivery date."
   }
   ```
 
-### Running API with Docker (for AgenticBench)
+### 🐳 Running API with Docker (for AgenticBench)
 
-#### For Ubuntu/Windows :
-
+#### Ubuntu/Windows:
 ```bash
-
 docker build -t agentic_browser .
 docker run -it --net=host --env-file .env agentic_browser
-
 ```
-
-#### For macOS :
-
+#### macOS:
 ```bash
-
 docker build -t agentic_browser .
 docker run -it -p 8000:8000 --env-file .env agentic_browser
-
 ```
 
-## Acknowledgements
+---
+
+## 📄 License
+
+This repository is licensed under the [MIT License](LICENSE).
+
+---
+
+## 🙏 Acknowledgements
 
 - [Agent-E](https://github.com/EmergenceAI/Agent-E?tab=readme-ov-file)
 - [PydanticAI Python Agent Framework](https://github.com/pydantic/pydantic-ai)
+
+---
